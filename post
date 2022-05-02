@@ -1,0 +1,4 @@
+#!/bin/bash
+JSON=$1;
+PATH=$2;
+curl -d $JSON -H 'Content-Type: application/json' http://localhost:$PORT/$PATH;

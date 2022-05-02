@@ -1,0 +1,150 @@
+#!/bin/bash
+cat > ./app/reducer.ts <<EOF
+export function counterReducer(state = 0, action: any) {
+  switch (action.type) {
+    case 'INCREMENT':
+      return state + 1;
+    case 'DECREMENT':
+      return state - 1;
+    case 'AMOUNT':
+      return state + action.payload;
+    case 'RESET':
+      return 0;
+    default:
+      return state;
+  }
+}
+EOF
+cat > ./app/app.module.ts <<EOF
+import { FormsModule } from '@angular/forms';
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { counterReducer } from './reducer';
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreRouterConnectingModule } from '@ngrx/router-store';
+
+@NgModule({
+  declarations: [AppComponent],
+  imports: [
+    FormsModule,
+    BrowserModule,
+    AppRoutingModule,
+    StoreModule.forRoot({ counter: counterReducer }, {}),
+    EffectsModule.forRoot([]),
+    StoreRouterConnectingModule.forRoot(),
+  ],
+  providers: [],
+  bootstrap: [AppComponent],
+})
+export class AppModule {}
+
+EOF
+cat > ./app/app-state.ts <<EOF
+export interface AppState {
+  counter: number;
+}
+EOF
+cat > ./app/app.component.ts <<EOF
+import { Component } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { AppState } from './app-state';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css'],
+})
+export class AppComponent {
+  counter$;
+  constructor(private store: Store<AppState>) {
+    this.counter$ = store.select('counter');
+  }
+  title = 'mock';
+  amount = 0;
+  reset() {
+    this.store.dispatch({ type: 'RESET' });
+  }
+  decrement() {
+    this.store.dispatch({ type: 'DECREMENT' });
+  }
+  increment() {
+    this.store.dispatch({ type: 'INCREMENT' });
+  }
+  incrementAmount() {
+    console.log('hi');
+    this.store.dispatch({ type: 'AMOUNT', payload: this.amount });
+  }
+}
+
+EOF
+cat > ./app/app.component.css <<EOF
+.button {
+  border: 1px solid black;
+  width: 80px;
+  text-align: center;
+  padding: 6px;
+  margin: 2px 2px;
+}
+.button:hover {
+  background-color: var(--primary-color);
+}
+.button:active {
+  background-color: var(--secondary-color);
+}
+
+.count {
+  text-align: center;
+}
+
+EOF
+cat > ./app/app.component.html <<EOF
+<h1>Counter</h1>
+<p class="count">
+  {{ counter$ | async }}
+  {{ amount }}
+</p>
+<input [(ngModel)]="amount" (keyup.enter)="incrementAmount()" type="number" />
+<div class="button" (click)="increment()">Increment</div>
+<div class="button" (click)="decrement()">Decrement</div>
+<div class="button" (click)="reset()">Reset</div>
+HELLOOOOO
+EOF
+cat > styles.css <<EOF
+:root {
+  --primary-color: orange;
+  --secondary-color: pink;
+  --light-gray: #afafaf;
+  --gray: #787878;
+  --dark-gray: #232323;
+}
+
+body,
+html {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+  justify-content: center;
+}
+
+app-root {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+EOF
+ng add  @ngrx/store@latest
+ng add  @ngrx/effects@latest
+ng add  @ngrx/router-store@latest
+ng add  @ngrx/entity@latest
+ng add  @ngrx/store-devtools@latest
+ng add  @ngrx/schematics@latest
+

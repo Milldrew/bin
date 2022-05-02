@@ -1,0 +1,83 @@
+#!/bin/bash
+
+REDUCER_NAME_PLURAL=$1;
+echo $REDUCER_NAME_PLURAL;
+REDUCER_NAME_PLURAL_CAPITALIZED="$(tr '[:lower:]' '[:upper:]' <<< ${REDUCER_NAME_PLURAL:0:1})${REDUCER_NAME_PLURAL:1}" 
+echo $REDUCER_NAME_PLURAL_CAPITALIZED
+
+REDUCER_NAME_SINGULAR=$2;
+echo $REDUCER_NAME_SINGULAR
+REDUCER_NAME_SINGULAR_CAPITALIZED="$(tr '[:lower:]' '[:upper:]' <<< ${REDUCER_NAME_SINGULAR:0:1})${REDUCER_NAME_SINGULAR:1}" 
+echo $REDUCER_NAME_SINGULAR_CAPITALIZED
+
+gsed -i '1 i import {'$REDUCER_NAME_PLURAL'Reducer} from `./reducers/'$REDUCER_NAME_PLURAL'/'$REDUCER_NAME_PLURAL'.reducer`' $ANGULAR_APP_DIR/app/app.module.ts
+gsed -i '1 i import {'$REDUCER_NAME_PLURAL'CollectionReducer} from `./reducers/'$REDUCER_NAME_PLURAL'/'$REDUCER_NAME_PLURAL'-collection.reducer`' $ANGULAR_APP_DIR/app/app.module.ts
+
+echo "$ANGULAR_APP_DIR"app/reducers/$REDUCER_NAME_PLURAL
+mkdir "$ANGULAR_APP_DIR"app/reducers/$REDUCER_NAME_PLURAL
+
+cat > "$ANGULAR_APP_DIR"app/reducers/$REDUCER_NAME_PLURAL/$REDUCER_NAME_PLURAL.model.ts <<EOF
+export interface $REDUCER_NAME_SINGULAR_CAPITALIZED {
+    id: string;
+    name: string;
+  };
+}
+EOF
+
+
+cat > "$ANGULAR_APP_DIR"app/reducers/$REDUCER_NAME_PLURAL/$REDUCER_NAME_PLURAL.actions.ts <<EOF
+
+import { createAction, props } from '@ngrx/store';
+import { $REDUCER_NAME_SINGULAR_CAPITALIZED } from './$REDUCER_NAME_PLURAL.model';
+
+export const addBook = createAction(
+ 'Add $REDUCER_NAME_SINGULAR',
+ props<{ "$REDUCER_NAME_SINGULAR"Id: string }>()
+);
+
+export const removeBook = createAction(
+   'Remove $REDUCER_NAME_PLURAL',
+   props<{ $REDUCER_NAME_SINGULARId: string }>()
+);
+
+export const retrieved$REDUCER_NAME_PLURAL_CAPITALIZED = createAction(
+  'Retrieve $REDUCER_NAME_PLURAL',
+  props<{ $REDUCER_NAME_PLURAL: ReadonlyArray<"$REDUCER_NAME_PLURAL_CAPITALIZED"> }>()
+);
+EOF
+
+
+cat > "$ANGULAR_APP_DIR"app/reducers/$REDUCER_NAME_PLURAL/$REDUCER_NAME_PLURAL.reducer.ts <<EOF
+
+import { createReducer, on } from '@ngrx/store';
+
+import { retrieved$REDUCER_NAME_PLURAL_CAPITALIZED } from './$REDUCER_NAME_PLURAL.actions';
+import { $REDUCER_NAME_SINGULAR_CAPITALIZED } from './$REDUCER_NAME_PLURAL.model';
+
+export const initialState: ReadonlyArray<$REDUCER_NAME_SINGULAR_CAPITALIZED> = [];
+
+export const booksReducer = createReducer(
+  initialState,
+    on(retrieved$REDUCER_NAME_PLURAL_CAPITALIZED, (state, { $REDUCER_NAME_PLURAL }) => $REDUCER_NAME_PLURAL)
+  );
+EOF
+
+
+cat > "$ANGULAR_APP_DIR"app/reducers/$REDUCER_NAME_PLURAL/$REDUCER_NAME_PLURAL-collection.reducer.ts <<EOF
+import { createReducer, on } from '@ngrx/store';
+import { addBook, removeBook } from './books.actions';
+
+export const initialState: ReadonlyArray<string> = [];
+
+export const collectionReducer = createReducer(
+  initialState,
+    on(removeBook, (state, { bookId }) => state.filter((id) => id !== bookId)),
+    on(addBook, (state, { bookId }) => {
+      if (state.indexOf(bookId) > -1) return state;
+      return [...state, bookId];
+    })
+);
+EOF
+
+
+

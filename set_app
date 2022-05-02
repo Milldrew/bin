@@ -1,0 +1,3 @@
+#!/bin/bash
+tmux setenv ANGULAR_APP_DIR $(pwd)"/"
+echo $ANGULAR_APP_DIR

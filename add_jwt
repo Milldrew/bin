@@ -1,0 +1,3 @@
+#!/bin/bash
+yarn add @nestjs/jwt passport-jwt
+yarn add -D @types/passport-jwt

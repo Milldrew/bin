@@ -1,0 +1,3 @@
+#!/bin/bash
+yarn add @nestjs/websockets @nestjs/platform-socket.io
+yarn add -D @types/socket.io

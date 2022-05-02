@@ -1,0 +1,22 @@
+#!/bin/bash
+cat << EOF  > pedac.txt 
+Explain the problem:
+
+inputs:
+outputs:
+Example:
+rules
+Mental Model:
+
+
+Data Structures:
+
+
+Algorithim:
+
+
+
+
+Code:
+EOF
+vim pedac.txt

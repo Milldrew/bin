@@ -1,0 +1,2 @@
+#!/bin/bash
+sed -i.bu  's/"run.*/"run": "ng build --base-href",/' package.json 

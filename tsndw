@@ -1,0 +1,2 @@
+#!/bin/bash
+npx tsnd --respawn "$1"

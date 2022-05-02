@@ -1,0 +1,2 @@
+#!/bin/bash
+sed -i.bu  's/"start.*/"start": "ng serve --host 192.168.0.143",/' package.json 

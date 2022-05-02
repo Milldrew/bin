@@ -1,0 +1,16 @@
+{
+  "name": "bin",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Andrew Miller <andrew.patrick.miller.2021@gmail.com>",
+  "license": "MIT",
+  "description": "this repository is for",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "dependencies": {
+    "chokidar": "^3.5.3"
+  },
+  "type": "module"
+}

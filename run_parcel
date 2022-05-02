@@ -14,6 +14,24 @@ clickability: curoser --> pointers
 button: hover animations
 anchor tag: animations
 */
+:root {
+  --pastel-blue: #46AFE3;
+  --pastel-yellow: #E3DD30;
+  --light-blue: #19A6FF;
+  --main-orange: #ff7E19;
+  --main-blue: #4319FF;
+  --main-green: #00FF00;
+  --main-red: #FF0000;
+  --error: #E3192D;
+  --success: #12B312;
+  --warning: #FFFC19;
+  --default-bright-gray:#E6E6E6;
+  --default-bright:#BFBFBF;
+  --default-dark-gray:#808080;
+  --default-gray:#808080;
+  --default-off-black:#404040;
+  --default-white:#FFFFFF;
+}
 a, button {
   cursor: pointer;
 }
@@ -26,22 +44,36 @@ button:hover {
   padding: 0 0;
   margin: 0 0;
   box-sizing: border-box;
-  color: white;
-  background-color: black;
-  Font-Family: 'PT Sans', Sans-Serif;
-  Font-Size: 46px;
- /* Font-Family: 'Playfair Display', Serif;
-  Font-Size: 16px; */
+  background-color: var(--default-dark-gray);
+  color: var(--default-white);
+  font-family: 'PT Sans', Sans-Serif;
+}
+/* font-weight 400 is default */
+h1 {
+  font-size: 96px;
+  letter-spacing: -1.5px;
+  font-weight: 300;
+}
+h2 {
+  font-size: 60px;
+  letter-spacing: -0.5px;
+  font-weight: 300;
+}
+h3 {
+  font-size: 48px;
+}
+h4 {
+  font-size: 34px;
+  letter-spacing: .25px;
 }
 
-:root {
-  --default-bright-gray:#E6E6E6;
-  --default-bright:#BFBFBF;
-  --default-dark-gray:#808080;
-  --default-gray:#808080;
-  --default-off-black:#404040;
-  --default-white:#FFFFFF;
+p {
+  Font-Family: 'Playfair Display', Serif;
+  Font-Size: 30px;
+  line-height: 1.5;  
+  letter-spacing: .5px;
 }
+
 
 EOF
 cat >> src/index.html <<EOF
@@ -56,10 +88,14 @@ cat >> src/index.html <<EOF
   </head>
   <body>
   <header>
+  <nav>
+  <h1>Title</h1> 
+  </nav>
   </header>
   <main>
-  <h1><a>FooBar</a></h1>
+  <h2><a>FooBar</a></h2>
   <button><h2>button</h2></button>
+  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. </p>
   </main>
   <footer>
   </footer>
@@ -93,12 +129,12 @@ cat > ./__tests__/unit_test/mock.test.js <<EOF
 /**
  * @jest-environment puppeteer
  */
-describe("Google", () => {
+describe("mock teset", () => {
   beforeAll(async () => {
     await page.goto("http://localhost:7777");
   });
 
-  it('title should be say "hello" ', async () => {
+  it('title should be say "test me" ', async () => {
     await expect(await page.title()).toMatch("test me");
   });
 });

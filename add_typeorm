@@ -1,0 +1,2 @@
+#!/bin/bash
+yarn add @nestjs/typeorm typeorm pg

@@ -1,0 +1,4 @@
+#!/bin/bash
+nest g resource users
+nest g module auth
+nest g service auth
